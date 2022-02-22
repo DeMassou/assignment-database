@@ -7,6 +7,6 @@ public interface CustomerRepository {
     public ArrayList <Customer> selectAllCustomers();
     public Customer selectSpecificCustomerById(int customerId);
     public Customer selectCustomerByName(String firstName);
-    public ArrayList<Customer> selectPageOfCustomers();
+    public ArrayList <Customer> selectPageOfCustomers(String limit, String offset);
 
 }

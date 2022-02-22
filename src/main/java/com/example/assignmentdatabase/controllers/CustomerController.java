@@ -23,4 +23,16 @@ public class CustomerController {
 
     return customerRepository.selectSpecificCustomerById(customerId);
     }
+
+    /*@RequestMapping(value = "api/customer/{firstName}", method = RequestMethod.GET )
+    public Customer selectCustomerByName(@PathVariable String firstName){
+        return customerRepository.selectCustomerByName(firstName);
+    }*/
+
+    @RequestMapping (value = "api/page/{limit}/{offset}", method = RequestMethod.GET)
+    public ArrayList<Customer>selectPageOfCustomers(@PathVariable String limit, @PathVariable String offset) {
+        return customerRepository.selectPageOfCustomers(limit, offset);
+
+}
+
 }

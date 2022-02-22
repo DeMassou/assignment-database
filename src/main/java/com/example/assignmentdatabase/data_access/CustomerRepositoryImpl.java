@@ -93,7 +93,9 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         try{
             connection = DriverManager.getConnection(URL);
 
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM customer WHERE FirstName LIKE 'Leonie' ");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT CustomerId,FirstName,LastName,Phone,Email,Country,PostalCode FROM customer WHERE FirstName LIKE ? ");
+
+            preparedStatement.setString(1, "%" + firstName + "%");
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -123,7 +125,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     }
 
     //4.
-    public ArrayList<Customer> selectPageOfCustomers(){
+    public ArrayList<Customer> selectPageOfCustomers(String limit, String offset){
 
         ArrayList<Customer> customers = new ArrayList<Customer>();
 
@@ -131,7 +133,11 @@ public class CustomerRepositoryImpl implements CustomerRepository{
             connection = DriverManager.getConnection(URL);
 
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT CustomerId,FirstName,LastName," +
-                    "Phone,Email,Country,PostalCode FROM customer LIMIT 10 OFFSET 50");
+                    "Phone,Email,Country,PostalCode FROM customer LIMIT ? OFFSET ?");
+            preparedStatement.setString(1, limit);
+            preparedStatement.setString(2, offset);
+
+
 
             ResultSet  resultSet = preparedStatement.executeQuery();
 

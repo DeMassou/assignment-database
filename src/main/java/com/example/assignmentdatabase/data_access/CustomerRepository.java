@@ -9,5 +9,6 @@ public interface CustomerRepository {
     public Customer selectCustomerByName(String firstName);
     public ArrayList <Customer> selectPageOfCustomers(String limit, String offset);
     public Boolean addCustomer(Customer customer);
+    public Boolean updateCustomer(Customer customer);
 
 }

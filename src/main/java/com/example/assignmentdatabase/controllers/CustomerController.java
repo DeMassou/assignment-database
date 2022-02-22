@@ -13,7 +13,7 @@ public class CustomerController {
         this.customerRepository = (CustomerRepositoryImpl) customerRepository;
     }
 
-    @RequestMapping (value = "api/customer", method = RequestMethod.GET)
+    @RequestMapping (value = "/api/customer", method = RequestMethod.GET)
     public ArrayList<Customer>selectAllCustomers() {
         return customerRepository.selectAllCustomers();
     }
@@ -33,6 +33,10 @@ public class CustomerController {
     public ArrayList<Customer>selectPageOfCustomers(@PathVariable String limit, @PathVariable String offset) {
         return customerRepository.selectPageOfCustomers(limit, offset);
 
-}
+}//test
+    @RequestMapping (value = "api/customer", method = RequestMethod.POST)
+    public boolean addCustomer(@RequestBody Customer customer){
+        return customerRepository.addCustomer(customer);
+    }
 
 }

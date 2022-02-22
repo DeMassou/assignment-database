@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping ("api")
 public class CustomerController {
     private final CustomerRepositoryImpl customerRepository;
 
@@ -14,8 +13,14 @@ public class CustomerController {
         this.customerRepository = (CustomerRepositoryImpl) customerRepository;
     }
 
-    @GetMapping ("customer")
+    @RequestMapping (value = "api/customer", method = RequestMethod.GET)
     public ArrayList<Customer>selectAllCustomers() {
         return customerRepository.selectAllCustomers();
+    }
+
+    @RequestMapping(value = "api/customer/{customerId}", method = RequestMethod.GET)
+    public Customer selectSpecificCustomerById(@PathVariable("customerId")  int customerId) {
+
+    return customerRepository.selectSpecificCustomerById(customerId);
     }
 }

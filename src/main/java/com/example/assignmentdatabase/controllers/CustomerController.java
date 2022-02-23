@@ -2,6 +2,8 @@ package com.example.assignmentdatabase.controllers;
 import com.example.assignmentdatabase.data_access.CustomerRepository;
 import com.example.assignmentdatabase.data_access.CustomerRepositoryImpl;
 import com.example.assignmentdatabase.models.Customer;
+import com.example.assignmentdatabase.models.CustomerCountry;
+import com.example.assignmentdatabase.models.CustomerSpender;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
@@ -42,6 +44,16 @@ public class CustomerController {
     @RequestMapping (value = "api/customer", method = RequestMethod.PUT)
     public boolean updateCustomer(@RequestBody Customer customer){
         return customerRepository.updateCustomer(customer);
+    }
+
+    @RequestMapping (value = "/api/customer/country", method = RequestMethod.GET)
+    public ArrayList<CustomerCountry>returnCustomerCountry() {
+        return customerRepository.returnCustomerCountry();
+    }
+
+    @RequestMapping (value = "/api/customer/spender", method = RequestMethod.GET)
+    public ArrayList<CustomerSpender>returnCustomerSpender() {
+        return customerRepository.returnCustomerSpender();
     }
 
 }

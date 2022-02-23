@@ -1,6 +1,8 @@
 package com.example.assignmentdatabase.data_access;
 
 import com.example.assignmentdatabase.models.Customer;
+import com.example.assignmentdatabase.models.CustomerCountry;
+import com.example.assignmentdatabase.models.CustomerSpender;
 import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.ArrayList;
@@ -228,5 +230,67 @@ public class CustomerRepositoryImpl implements CustomerRepository{
             }
         }
         return success;
+    }
+
+    public ArrayList<CustomerCountry> returnCustomerCountry(){
+        ArrayList<CustomerCountry> customerCountry = new ArrayList<>();
+
+        try{
+            connection = DriverManager.getConnection(URL);
+
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT Country, COUNT(CustomerId) AS numberOfCustomers FROM customer GROUP BY Country ORDER BY numberOfCustomers DESC");
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                customerCountry.add(new CustomerCountry(
+                        resultSet.getString("country"),
+                        resultSet.getInt("numberOfCustomers")
+
+
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (Exception exception) {
+                System.out.println("Exception");
+            }
+        }
+        return customerCountry;
+    }
+
+    public ArrayList<CustomerSpender> returnCustomerSpender(){
+        ArrayList<CustomerSpender> customerSpender = new ArrayList<>();
+
+        try{
+            connection = DriverManager.getConnection(URL);
+
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT CustomerId, sum(Total) as TotalInvoice FROM Invoice GROUP BY CustomerId ORDER BY TotalInvoice DESC");
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                customerSpender.add(new CustomerSpender(
+                        resultSet.getString("customerId"),
+                        resultSet.getDouble("TotalInvoice")
+
+
+                        ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (Exception exception) {
+                System.out.println("Exception");
+            }
+        }
+        return customerSpender;
     }
 }

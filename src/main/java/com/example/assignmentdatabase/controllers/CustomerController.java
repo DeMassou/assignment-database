@@ -60,9 +60,8 @@ public class CustomerController {
         return customerRepository.returnCustomerSpender();
     }
 
-    @RequestMapping (value = "/api/customer/genre", method = RequestMethod.GET)
-    public ArrayList<CustomerGenre> getCustomerGenre() {
-
+    @RequestMapping (value = "/api/customer/{customerId}/genre", method = RequestMethod.GET)
+    public ArrayList<CustomerGenre> getCustomerGenre(@PathVariable String customerId) {
         return customerRepository.getCustomerGenre();
     }
 

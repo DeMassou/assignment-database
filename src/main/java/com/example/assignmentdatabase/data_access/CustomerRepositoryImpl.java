@@ -2,6 +2,7 @@ package com.example.assignmentdatabase.data_access;
 
 import com.example.assignmentdatabase.models.Customer;
 import com.example.assignmentdatabase.models.CustomerCountry;
+import com.example.assignmentdatabase.models.CustomerGenre;
 import com.example.assignmentdatabase.models.CustomerSpender;
 import org.springframework.stereotype.Repository;
 import java.sql.*;
@@ -138,8 +139,6 @@ public class CustomerRepositoryImpl implements CustomerRepository{
                     "Phone,Email,Country,PostalCode FROM customer LIMIT ? OFFSET ?");
             preparedStatement.setString(1, limit);
             preparedStatement.setString(2, offset);
-
-
 
             ResultSet  resultSet = preparedStatement.executeQuery();
 
@@ -281,7 +280,6 @@ public class CustomerRepositoryImpl implements CustomerRepository{
 
                         ));
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -293,4 +291,41 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         }
         return customerSpender;
     }
+
+
+    public ArrayList<CustomerGenre> getCustomerGenre(){
+        ArrayList<CustomerGenre> customerGenres = new ArrayList<>();
+
+        try{
+            connection = DriverManager.getConnection(URL);
+
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT Customer.CustomerId, G.Name, count(T.TrackId) FROM Customer\n" +
+                    "    JOIN Invoice I ON Customer.CustomerId = I.CustomerId\n" +
+                    "    JOIN InvoiceLine IL ON I.InvoiceId = IL.InvoiceId\n" +
+                    "    JOIN Track T ON IL.TrackId = T.TrackId\n" +
+                    "    JOIN Genre G ON T.GenreId = G.GenreId\n" +
+                    "WHERE I.CustomerId = 2\n" +
+                    "GROUP BY Customer.CustomerId, G.Name");
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                customerGenres.add(new CustomerGenre(
+                        resultSet.getString("Name")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (Exception exception) {
+                System.out.println("Exception");
+            }
+        }
+        return customerGenres;
+    }
+
+
+
 }

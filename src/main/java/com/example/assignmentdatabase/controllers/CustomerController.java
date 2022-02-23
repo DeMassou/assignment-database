@@ -39,8 +39,8 @@ public class CustomerController {
         return customerRepository.addCustomer(customer);
     }
 
-    @RequestMapping (value = "api/customer/{customerId}", method = RequestMethod.PUT)
-    public boolean updateCustomer(@PathVariable int customerId, @RequestBody Customer customer){
+    @RequestMapping (value = "api/customer", method = RequestMethod.PUT)
+    public boolean updateCustomer(@RequestBody Customer customer){
         return customerRepository.updateCustomer(customer);
     }
 

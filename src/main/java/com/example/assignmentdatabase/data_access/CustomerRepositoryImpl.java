@@ -189,27 +189,32 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         }
         return success;
     }
+
     public Boolean updateCustomer(Customer customer){
-        Boolean success = false;
+        boolean success = false;
         try{
             // Connect to DB
             connection = DriverManager.getConnection(URL);
 
             // Make SQL query
             PreparedStatement preparedStatement =
-                    connection.prepareStatement("UPDATE customer SET CustomerId = ?, FirstName = ?, LastName = ?, Phone = ?, Email = ?, Country= ?, PostalCode= ? WHERE Id=?");
-            preparedStatement.setString(1,customer.getCustomerId());
-            preparedStatement.setString(2,customer.getFirstName());
-            preparedStatement.setString(3,customer.getLastName());
-            preparedStatement.setString(4,customer.getPhone());
-            preparedStatement.setString(5,customer.getEmail());
-            preparedStatement.setString(6,customer.getCountry());
-            preparedStatement.setString(7,customer.getPostalCode());
+                    connection.prepareStatement("UPDATE Customer SET FirstName = ?, LastName = ?, Phone = ?, Email = ?, Country= ?, PostalCode= ? WHERE CustomerId = ?");
+            preparedStatement.setString(1,customer.getFirstName());
+            preparedStatement.setString(2,customer.getLastName());
+            preparedStatement.setString(3,customer.getPhone());
+            preparedStatement.setString(4,customer.getEmail());
+            preparedStatement.setString(5,customer.getCountry());
+            preparedStatement.setString(6,customer.getPostalCode());
+            preparedStatement.setString(7,customer.getCustomerId());
 
             // Execute Query
             int result = preparedStatement.executeUpdate();
             success = (result != 0);
-            System.out.println("Update customer successfully");
+            if(success){
+                System.out.println("Update customer successfully");
+            }else{
+                System.out.println("Cannot update customer");
+            }
         }
         catch (Exception exception){
             System.out.println("Exception");

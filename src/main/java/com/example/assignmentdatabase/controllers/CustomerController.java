@@ -3,6 +3,7 @@ import com.example.assignmentdatabase.data_access.CustomerRepository;
 import com.example.assignmentdatabase.data_access.CustomerRepositoryImpl;
 import com.example.assignmentdatabase.models.Customer;
 import com.example.assignmentdatabase.models.CustomerCountry;
+import com.example.assignmentdatabase.models.CustomerGenre;
 import com.example.assignmentdatabase.models.CustomerSpender;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
@@ -20,16 +21,18 @@ public class CustomerController {
         return customerRepository.selectAllCustomers();
     }
 
+    //
     @RequestMapping(value = "api/customer/{customerId}", method = RequestMethod.GET)
     public Customer selectSpecificCustomerById(@PathVariable("customerId")  int customerId) {
 
     return customerRepository.selectSpecificCustomerById(customerId);
     }
 
-    /*@RequestMapping(value = "api/customer/{firstName}", method = RequestMethod.GET )
+    //
+    @RequestMapping(value = "api/customer/{firstName}", method = RequestMethod.GET )
     public Customer selectCustomerByName(@PathVariable String firstName){
         return customerRepository.selectCustomerByName(firstName);
-    }*/
+    }
 
     @RequestMapping (value = "api/page/{limit}/{offset}", method = RequestMethod.GET)
     public ArrayList<Customer>selectPageOfCustomers(@PathVariable String limit, @PathVariable String offset) {
@@ -53,7 +56,14 @@ public class CustomerController {
 
     @RequestMapping (value = "/api/customer/spender", method = RequestMethod.GET)
     public ArrayList<CustomerSpender>returnCustomerSpender() {
+
         return customerRepository.returnCustomerSpender();
+    }
+
+    @RequestMapping (value = "/api/customer/genre", method = RequestMethod.GET)
+    public ArrayList<CustomerGenre> getCustomerGenre() {
+
+        return customerRepository.getCustomerGenre();
     }
 
 }

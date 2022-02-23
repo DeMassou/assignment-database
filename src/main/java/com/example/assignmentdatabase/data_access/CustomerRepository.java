@@ -1,6 +1,7 @@
 package com.example.assignmentdatabase.data_access;
 import com.example.assignmentdatabase.models.Customer;
 import com.example.assignmentdatabase.models.CustomerCountry;
+import com.example.assignmentdatabase.models.CustomerGenre;
 import com.example.assignmentdatabase.models.CustomerSpender;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public interface CustomerRepository {
     public Boolean updateCustomer(Customer customer);
     public ArrayList<CustomerCountry> returnCustomerCountry();
     public ArrayList<CustomerSpender> returnCustomerSpender();
+    public ArrayList<CustomerGenre> getCustomerGenre();
 
 
 }

@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+//Connection to chinook database
 @Component
 @Profile("production")
 public class ProdConnectionFactory implements DatabaseConnectionFactory {

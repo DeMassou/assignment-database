@@ -19,14 +19,14 @@ public class CustomerAPIController {
     }
 
     //
-    @RequestMapping(value = "api/customer/{customerId}", method = RequestMethod.GET)
+    @RequestMapping(value = "api/customer/id/{customerId}", method = RequestMethod.GET)
     public Customer selectSpecificCustomerById(@PathVariable("customerId")  int customerId) {
 
     return customerRepository.selectSpecificCustomerById(customerId);
     }
 
     //
-    @RequestMapping(value = "api/customer/{firstName}", method = RequestMethod.GET )
+    @RequestMapping(value = "api/customer/firstName/{firstName}", method = RequestMethod.GET )
     public Customer selectCustomerByName(@PathVariable String firstName){
         return customerRepository.selectCustomerByName(firstName);
     }

@@ -16,6 +16,10 @@ public class CustomerController {
     @GetMapping("/")
     private String view(Model model) {
         model.addAttribute("artist", customerRepository.getFiveRandomArtist());
+        model.addAttribute("songs", customerRepository.getFiveRandomSongs());
+        model.addAttribute("genres", customerRepository.getFiveRandomGenres());
+
+
         return "home";
     }
 }

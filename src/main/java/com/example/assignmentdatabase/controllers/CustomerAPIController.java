@@ -61,11 +61,4 @@ public class CustomerAPIController {
     public ArrayList<CustomerGenre> getCustomerGenre(@PathVariable String customerId) {
         return customerRepository.getCustomerGenre();
     }
-/*
-    @RequestMapping(value = "api/customer/artist", method = RequestMethod.GET)
-    public ArrayList<Artist> getFiveRandomArtist() {
-
-        return customerRepository.getFiveRandomArtist();
-    }
-*/
 }

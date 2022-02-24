@@ -353,6 +353,66 @@ public class CustomerRepositoryImpl implements CustomerRepository{
 
     }
 
+    public ArrayList<Songs> getFiveRandomSongs() {
+        ArrayList<Songs> songsList = new ArrayList<>();
+
+        try {
+            //connection
+            connection = DriverManager.getConnection(URL);
+
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT Track.Name FROM Track ORDER BY RANDOM() LIMIT 5");
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                songsList.add(new Songs(
+                        resultSet.getString("name")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return songsList;
+
+    }
+
+    public ArrayList<Genres> getFiveRandomGenres() {
+        ArrayList<Genres> genresList = new ArrayList<>();
+
+        try {
+            //connection
+            connection = DriverManager.getConnection(URL);
+
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT Genre.Name FROM Genre ORDER BY RANDOM() LIMIT 5");
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                genresList.add(new Genres(
+                        resultSet.getString("name")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return genresList;
+
+    }
+
 
 
 }

@@ -10,10 +10,18 @@ public class CustomerGenre {
         this.genre = genre;
     }
 
+    /**
+     * return the genre
+     * @return
+     */
     public String getGenre() {
         return genre;
     }
 
+    /**
+     * This should be an arraylist
+     * @param genre
+     */
     public void setGenre(ArrayList<String> genre) {
         this.genre = String.valueOf(genre);
     }

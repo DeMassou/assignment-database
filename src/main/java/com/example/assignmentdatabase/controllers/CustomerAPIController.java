@@ -1,18 +1,15 @@
 package com.example.assignmentdatabase.controllers;
 import com.example.assignmentdatabase.data_access.CustomerRepository;
 import com.example.assignmentdatabase.data_access.CustomerRepositoryImpl;
-import com.example.assignmentdatabase.models.Customer;
-import com.example.assignmentdatabase.models.CustomerCountry;
-import com.example.assignmentdatabase.models.CustomerGenre;
-import com.example.assignmentdatabase.models.CustomerSpender;
+import com.example.assignmentdatabase.models.*;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 
 @RestController
-public class CustomerController {
+public class CustomerAPIController {
     private final CustomerRepositoryImpl customerRepository;
 
-    public CustomerController(CustomerRepository customerRepository) {
+    public CustomerAPIController(CustomerRepository customerRepository) {
         this.customerRepository = (CustomerRepositoryImpl) customerRepository;
     }
 
@@ -64,5 +61,11 @@ public class CustomerController {
     public ArrayList<CustomerGenre> getCustomerGenre(@PathVariable String customerId) {
         return customerRepository.getCustomerGenre();
     }
+/*
+    @RequestMapping(value = "api/customer/artist", method = RequestMethod.GET)
+    public ArrayList<Artist> getFiveRandomArtist() {
 
+        return customerRepository.getFiveRandomArtist();
+    }
+*/
 }

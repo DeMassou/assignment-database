@@ -1,9 +1,6 @@
 package com.example.assignmentdatabase.data_access;
 
-import com.example.assignmentdatabase.models.Customer;
-import com.example.assignmentdatabase.models.CustomerCountry;
-import com.example.assignmentdatabase.models.CustomerGenre;
-import com.example.assignmentdatabase.models.CustomerSpender;
+import com.example.assignmentdatabase.models.*;
 import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.ArrayList;
@@ -304,7 +301,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
                     "    JOIN InvoiceLine IL ON I.InvoiceId = IL.InvoiceId\n" +
                     "    JOIN Track T ON IL.TrackId = T.TrackId\n" +
                     "    JOIN Genre G ON T.GenreId = G.GenreId\n" +
-                    "WHERE I.CustomerId = 2\n" +
+                    "WHERE I.CustomerId = 1 \n" +
                     "GROUP BY Customer.CustomerId, G.Name");
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -324,6 +321,36 @@ public class CustomerRepositoryImpl implements CustomerRepository{
             }
         }
         return customerGenres;
+    }
+
+    public ArrayList<Artist> getFiveRandomArtist() {
+        ArrayList<Artist> artistList = new ArrayList<>();
+
+        try {
+            //connection
+            connection = DriverManager.getConnection(URL);
+
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT Artist.Name FROM Artist ORDER BY RANDOM() LIMIT 5");
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                artistList.add(new Artist(
+                        resultSet.getString("name")
+                ));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return artistList;
+
     }
 
 

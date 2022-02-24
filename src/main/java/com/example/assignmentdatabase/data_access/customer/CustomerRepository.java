@@ -1,4 +1,4 @@
-package com.example.assignmentdatabase.data_access;
+package com.example.assignmentdatabase.data_access.customer;
 import com.example.assignmentdatabase.models.Customer;
 import com.example.assignmentdatabase.models.CustomerCountry;
 import com.example.assignmentdatabase.models.CustomerGenre;

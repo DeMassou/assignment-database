@@ -1,6 +1,6 @@
 package com.example.assignmentdatabase.view;
 
-import com.example.assignmentdatabase.data_access.CustomerRepositoryImpl;
+import com.example.assignmentdatabase.data_access.customer.CustomerRepositoryImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,6 +1,6 @@
 package com.example.assignmentdatabase.controllers;
-import com.example.assignmentdatabase.data_access.CustomerRepository;
-import com.example.assignmentdatabase.data_access.CustomerRepositoryImpl;
+import com.example.assignmentdatabase.data_access.customer.CustomerRepository;
+import com.example.assignmentdatabase.data_access.customer.CustomerRepositoryImpl;
 import com.example.assignmentdatabase.models.*;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;

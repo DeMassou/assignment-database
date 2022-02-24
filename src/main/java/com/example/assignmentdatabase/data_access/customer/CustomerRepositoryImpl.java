@@ -1,5 +1,6 @@
-package com.example.assignmentdatabase.data_access;
+package com.example.assignmentdatabase.data_access.customer;
 
+import com.example.assignmentdatabase.data_access.connectivity.DatabaseConnectionFactory;
 import com.example.assignmentdatabase.models.*;
 import org.springframework.stereotype.Repository;
 import java.sql.*;
@@ -9,15 +10,17 @@ import java.util.ArrayList;
 @Repository
 public class CustomerRepositoryImpl implements CustomerRepository{
 
-    private String URL = ConnectionHelper.URL;
-    private Connection connection = null;
+    private final DatabaseConnectionFactory connectionFactory;
+
+    public CustomerRepositoryImpl(DatabaseConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+    }
 
     //1. read all customers in the database
     public ArrayList<Customer> selectAllCustomers(){
         ArrayList<Customer> customers = new ArrayList<>();
 
-        try{
-            connection = DriverManager.getConnection(URL);
+        try(Connection connection = connectionFactory.getConnection()){
 
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT CustomerId,FirstName,LastName,Phone,Email,Country,PostalCode FROM customer");
 
@@ -39,12 +42,6 @@ public class CustomerRepositoryImpl implements CustomerRepository{
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (Exception exception) {
-                System.out.println("Exception");
-            }
         }
         return customers;
     }
@@ -53,9 +50,8 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     public Customer selectSpecificCustomerById(int customerId){
         Customer customer = null;
 
-        try {
+        try (Connection connection = connectionFactory.getConnection()){
             //connection
-            connection = DriverManager.getConnection(URL);
 
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT CustomerId,FirstName,LastName,Phone,Email,Country,PostalCode FROM customer WHERE CustomerId = ?");
             preparedStatement.setString(1, String.valueOf(customerId));
@@ -76,13 +72,6 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
         return customer;
     }
 
@@ -90,8 +79,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     public Customer selectCustomerByName(String firstName){
         Customer customer = null;
 
-        try{
-            connection = DriverManager.getConnection(URL);
+        try (Connection connection = connectionFactory.getConnection()){
 
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT CustomerId,FirstName,LastName,Phone,Email,Country,PostalCode FROM customer WHERE FirstName LIKE ? ");
 
@@ -114,13 +102,6 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
         return customer;
     }
 
@@ -129,8 +110,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
 
         ArrayList<Customer> customers = new ArrayList<Customer>();
 
-        try{
-            connection = DriverManager.getConnection(URL);
+        try (Connection connection = connectionFactory.getConnection()){
 
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT CustomerId,FirstName,LastName," +
                     "Phone,Email,Country,PostalCode FROM customer LIMIT ? OFFSET ?");
@@ -160,8 +140,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
 
     public Boolean addCustomer(Customer customer) {
         Boolean success = false;
-        try {
-            connection = DriverManager.getConnection(URL);
+        try (Connection connection = connectionFactory.getConnection()){
 
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Customer (CustomerId, FirstName, LastName, Phone, Email, Country, PostalCode) VALUES (?,?,?,?,?,?,?)");
             preparedStatement.setString(1,customer.getCustomerId());
@@ -178,21 +157,13 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        finally{
-            try {
-                connection.close();
-            } catch (Exception exception){
-                System.out.println("Exception");
-            }
-        }
         return success;
     }
 
     public Boolean updateCustomer(Customer customer){
         boolean success = false;
-        try{
+        try (Connection connection = connectionFactory.getConnection()){
             // Connect to DB
-            connection = DriverManager.getConnection(URL);
 
             // Make SQL query
             PreparedStatement preparedStatement =
@@ -217,22 +188,13 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         catch (Exception exception){
             System.out.println("Exception");
         }
-        finally {
-            try {
-                connection.close();
-            }
-            catch (Exception exception){
-                System.out.println("Exception");
-            }
-        }
         return success;
     }
 
     public ArrayList<CustomerCountry> returnCustomerCountry(){
         ArrayList<CustomerCountry> customerCountry = new ArrayList<>();
 
-        try{
-            connection = DriverManager.getConnection(URL);
+        try (Connection connection = connectionFactory.getConnection()){
 
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT Country, COUNT(CustomerId) AS numberOfCustomers FROM customer GROUP BY Country ORDER BY numberOfCustomers DESC");
 
@@ -249,12 +211,6 @@ public class CustomerRepositoryImpl implements CustomerRepository{
 
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (Exception exception) {
-                System.out.println("Exception");
-            }
         }
         return customerCountry;
     }
@@ -262,8 +218,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     public ArrayList<CustomerSpender> returnCustomerSpender(){
         ArrayList<CustomerSpender> customerSpender = new ArrayList<>();
 
-        try{
-            connection = DriverManager.getConnection(URL);
+        try (Connection connection = connectionFactory.getConnection()){
 
                 PreparedStatement preparedStatement = connection.prepareStatement("SELECT CustomerId, sum(Total) as TotalInvoice FROM Invoice GROUP BY CustomerId ORDER BY TotalInvoice DESC");
 
@@ -279,12 +234,6 @@ public class CustomerRepositoryImpl implements CustomerRepository{
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (Exception exception) {
-                System.out.println("Exception");
-            }
         }
         return customerSpender;
     }
@@ -293,8 +242,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     public ArrayList<CustomerGenre> getCustomerGenre(){
         ArrayList<CustomerGenre> customerGenres = new ArrayList<>();
 
-        try{
-            connection = DriverManager.getConnection(URL);
+        try (Connection connection = connectionFactory.getConnection()){
 
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT Customer.CustomerId, G.Name, count(T.TrackId) FROM Customer\n" +
                     "    JOIN Invoice I ON Customer.CustomerId = I.CustomerId\n" +
@@ -313,12 +261,6 @@ public class CustomerRepositoryImpl implements CustomerRepository{
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                connection.close();
-            } catch (Exception exception) {
-                System.out.println("Exception");
-            }
         }
         return customerGenres;
     }
@@ -326,9 +268,8 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     public ArrayList<Artist> getFiveRandomArtist() {
         ArrayList<Artist> artistList = new ArrayList<>();
 
-        try {
+        try (Connection connection = connectionFactory.getConnection()){
             //connection
-            connection = DriverManager.getConnection(URL);
 
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT Artist.Name FROM Artist ORDER BY RANDOM() LIMIT 5");
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -342,13 +283,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+
         return artistList;
 
     }
@@ -356,9 +291,8 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     public ArrayList<Songs> getFiveRandomSongs() {
         ArrayList<Songs> songsList = new ArrayList<>();
 
-        try {
+        try (Connection connection = connectionFactory.getConnection()){
             //connection
-            connection = DriverManager.getConnection(URL);
 
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT Track.Name FROM Track ORDER BY RANDOM() LIMIT 5");
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -372,13 +306,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+
         return songsList;
 
     }
@@ -386,9 +314,8 @@ public class CustomerRepositoryImpl implements CustomerRepository{
     public ArrayList<Genres> getFiveRandomGenres() {
         ArrayList<Genres> genresList = new ArrayList<>();
 
-        try {
+        try(Connection connection = connectionFactory.getConnection()) {
             //connection
-            connection = DriverManager.getConnection(URL);
 
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT Genre.Name FROM Genre ORDER BY RANDOM() LIMIT 5");
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -402,13 +329,7 @@ public class CustomerRepositoryImpl implements CustomerRepository{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+
         return genresList;
 
     }

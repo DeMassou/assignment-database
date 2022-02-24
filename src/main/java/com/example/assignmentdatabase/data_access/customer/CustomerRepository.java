@@ -6,6 +6,8 @@ import com.example.assignmentdatabase.models.CustomerSpender;
 
 import java.util.ArrayList;
 
+//Customer repository interface
+
 public interface CustomerRepository {
     public ArrayList <Customer> selectAllCustomers();
     public Customer selectSpecificCustomerById(int customerId);
